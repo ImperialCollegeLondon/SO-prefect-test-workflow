@@ -1,10 +1,16 @@
-from prefect import flow
+from prefect import flow, task
+
+
+@task
+def hello(value: int) -> int:
+    return value
+
+
+@task
+def goodbye(value: int) -> int:
+    return value * 2
 
 
 @flow(log_prints=True)
-def hello_world(name: str = "world", goodbye: bool = False):
-    print(f"Hello {name} from Prefect! JK")
-
-    if goodbye:
-        print(f"Goodbye {name}!")
-
+def my_flow(value: int):
+    goodbye(hello(value))
